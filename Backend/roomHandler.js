@@ -1,7 +1,6 @@
 const shortId = require("shortid");
 
 const roomHandler = (io, socket, rooms) => {
-  console.log("l-17", rooms);
   const create = (payload, callback) => {
     if (payload.type === "stranger") {
       const index = rooms.findIndex(
@@ -10,13 +9,11 @@ const roomHandler = (io, socket, rooms) => {
       if (index >= 0) {
         const room = rooms[index];
         room.players[socket.id] = {
-          // option: null,
-          optionLock: true,
+          optionLock: false,
           guess: 0,
           score: 0,
         };
         room.vacant = false;
-        console.log("l-17", rooms);
         socket.join(room.roomId);
         io.to(room.roomId).emit("room:get", room);
         callback(null, room.roomId);
@@ -25,7 +22,6 @@ const roomHandler = (io, socket, rooms) => {
           roomId: shortId.generate(),
           players: {
             [socket.id]: {
-              // option: null,
               optionLock: true,
               guess: 0,
               score: 0,
@@ -36,7 +32,6 @@ const roomHandler = (io, socket, rooms) => {
           type: payload.type,
         };
         rooms.push(room);
-        console.log("l-37", rooms);
         socket.join(room.roomId);
         io.to(room.roomId).emit("room:get", room);
         callback(null, room.roomId);
@@ -67,19 +62,16 @@ const roomHandler = (io, socket, rooms) => {
     const index = rooms.findIndex((room) => room.roomId === payload.roomId);
     if (index >= 0) {
       const room = rooms[index];
-      console.log("room l-73", room);
       if (room.players[socket.id]) return callback(null);
 
       if (room.vacant && room.private) {
         room.players[socket.id] = {
-          // option: null,
           optionLock: true,
           guess: 0,
           score: 0,
         };
         room.vacant = false;
         rooms.push(room);
-        console.log("l-78", rooms);
         socket.join(room.roomId);
         io.to(room.roomId).emit("room:get", room);
         callback(null, room);
