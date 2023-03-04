@@ -10,8 +10,7 @@ const roomHandler = (io, socket, rooms) => {
       if (index >= 0) {
         const room = rooms[index];
         room.players[socket.id] = {
-          // option: null,
-          optionLock: true,
+          optionLock: false,
           guess: 0,
           score: 0,
         };
@@ -25,7 +24,6 @@ const roomHandler = (io, socket, rooms) => {
           roomId: shortId.generate(),
           players: {
             [socket.id]: {
-              // option: null,
               optionLock: true,
               guess: 0,
               score: 0,
