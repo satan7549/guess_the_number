@@ -34,12 +34,6 @@ Numbers = () => {
         socket.emit("room:update", room);
       }
     }
-
-    console.log("guessNo", guessNo);
-    // console.log(player_1, player_2);
-
-    console.log("player in room", players);
-    // socket.emit("room:update", room);
   };
 
   const numberButtonStyle = {
